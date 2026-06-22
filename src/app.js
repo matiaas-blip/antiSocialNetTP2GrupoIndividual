@@ -1,18 +1,26 @@
 const express = require("express");
+const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
-
 const conectarDB = require("./config/database.js");
+
+const app = express();
+
+app.use(cors({
+  origin: "http://localhost:5173"
+}));
 
 // ROUTES
 const usersRouter = require("./routes/user.routes.js");
 const postsRouter = require("./routes/post.routes.js");
+const postImagesRouter = require("./routes/postImage.routes.js");
 
 // CONFIG
 dotenv.config();
 
-const app = express();
 app.use(express.json());
+
+app.use("/postimages", postImagesRouter);
 
 // Permitir acceso a archivos estáticos (UPLOADS)
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
