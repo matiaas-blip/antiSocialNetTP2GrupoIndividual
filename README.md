@@ -42,3 +42,7 @@ Backend de red social desarrollado con Node.js, Express y MongoDB.
 
 ```bash
 npm install
+
+## Swagger
+
+http://localhost:3000/api-docs

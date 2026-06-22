@@ -1,16 +1,8 @@
-require("dotenv").config();
-
 const app = require("./app");
-const conectarDB = require("./config/database.js");
+require("dotenv").config();
 
 const PORT = process.env.PORT || 3000;
 
-const startServer = async () => {
-  await conectarDB();
-
-  app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
-  });
-};
-
-startServer();
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});
