@@ -1,0 +1,271 @@
+openapi: 3.0.0
+info:
+  title: UnaHur Anti-Social Net API
+  version: 1.0.0
+  description: API de red social para TP con usuarios, posts, comentarios e imágenes
+
+servers:
+  - url: http://localhost:3000
+
+tags:
+  - name: Users
+  - name: Posts
+  - name: Comments
+  - name: Tags
+  - name: PostImages
+
+paths:
+
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Obtener todos los usuarios
+      responses:
+        "200":
+          description: Lista de usuarios
+
+    post:
+      tags:
+        - Users
+      summary: Crear usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "201":
+          description: Usuario creado
+
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Obtener usuario por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Usuario encontrado
+
+    put:
+      tags:
+        - Users
+      summary: Actualizar usuario
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Usuario actualizado
+
+    delete:
+      tags:
+        - Users
+      summary: Eliminar usuario
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Usuario eliminado
+
+  /posts:
+    get:
+      tags:
+        - Posts
+      summary: Obtener todos los posts o por userId
+      parameters:
+        - name: userId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lista de posts
+
+    post:
+      tags:
+        - Posts
+      summary: Crear post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Post"
+      responses:
+        "201":
+          description: Post creado
+
+  /posts/{id}:
+    get:
+      tags:
+        - Posts
+      summary: Obtener post por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Post encontrado
+
+    put:
+      tags:
+        - Posts
+      summary: Actualizar post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Post actualizado
+
+    delete:
+      tags:
+        - Posts
+      summary: Eliminar post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Post eliminado
+
+  /comments:
+    post:
+      tags:
+        - Comments
+      summary: Crear comentario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Comment"
+      responses:
+        "201":
+          description: Comentario creado
+
+  /comments/post/{postId}:
+    get:
+      tags:
+        - Comments
+      summary: Obtener comentarios por post
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lista de comentarios
+
+  /tags:
+    get:
+      tags:
+        - Tags
+      summary: Obtener todos los tags
+      responses:
+        "200":
+          description: Lista de tags
+
+  /postimages:
+    post:
+      tags:
+        - PostImages
+      summary: Agregar imagen a un post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostImage"
+      responses:
+        "201":
+          description: Imagen creada
+
+  /postimages/post/{postId}:
+    get:
+      tags:
+        - PostImages
+      summary: Obtener imágenes de un post
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lista de imágenes
+
+components:
+  schemas:
+
+    User:
+      type: object
+      properties:
+        usuario:
+          type: string
+        clave:
+          type: string
+        image:
+          type: string
+        seguidores:
+          type: array
+        fechaRegistro:
+          type: string
+
+    Post:
+      type: object
+      properties:
+        descripcion:
+          type: string
+        usuario:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+
+    Comment:
+      type: object
+      properties:
+        texto:
+          type: string
+        postId:
+          type: string
+        usuario:
+          type: string
+
+    PostImage:
+      type: object
+      properties:
+        url:
+          type: string
+        postId:
+          type: string

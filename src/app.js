@@ -2,9 +2,15 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
 const conectarDB = require("./config/database.js");
 
 const app = express();
+
+const swaggerDoc = YAML.load(path.join(__dirname, "swagger.yaml"));
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 app.use(cors({
   origin: "http://localhost:5173"
