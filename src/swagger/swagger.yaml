@@ -1,0 +1,49 @@
+openapi: 3.0.0
+
+info:
+  title: UnaHur Anti-Social Net API
+  version: 1.0.0
+  description: API de red social con usuarios, posts, comentarios y tags
+
+servers:
+  - url: http://localhost:3000
+
+paths:
+
+  /user:
+    post:
+      summary: Crear usuario
+    get:
+      summary: Obtener usuarios
+
+  /user/follow:
+    post:
+      summary: Seguir usuario
+
+  /post:
+    post:
+      summary: Crear post
+    get:
+      summary: Obtener posts
+
+  /post/feed/{userId}:
+    get:
+      summary: Feed de usuario
+
+  /comment:
+    post:
+      summary: Crear comentario
+
+  /comment/post/{postId}:
+    get:
+      summary: Comentarios de un post (filtrados)
+
+  /comment/{id}/hide:
+    patch:
+      summary: Ocultar comentario
+
+  /tag:
+    post:
+      summary: Crear tag
+    get:
+      summary: Obtener tags
