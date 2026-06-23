@@ -2,7 +2,14 @@ const Comment = require("../models/Comment");
 
 const createComment = async (req, res) => {
   try {
-    const comment = await Comment.create(req.body);
+    const comment = new Comment({
+      texto: req.body.texto,
+      post: req.body.postId, // 🔥 mapeo correcto
+      usuario: req.body.usuario
+    });
+
+    await comment.save();
+
     res.status(201).json(comment);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -47,8 +54,29 @@ const hideComment = async (req, res) => {
   }
 };
 
+const deleteComment = async (req, res) => {
+  try {
+    const comment = await Comment.findByIdAndDelete(req.params.id);
+
+    if (!comment) {
+      return res.status(404).json({
+        error: "Comentario no encontrado"
+      });
+    }
+
+    res.json({
+      message: "Comentario eliminado correctamente"
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
+  }
+};
+
 module.exports = {
   createComment,
   getCommentsByPost,
-  hideComment
+  hideComment,
+  deleteComment
 };

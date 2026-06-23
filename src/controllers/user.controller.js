@@ -51,8 +51,71 @@ const followUser = async (req, res) => {
   }
 };
 
+const getUserById = async (req, res) => {
+  try {
+    const usuario = await User.findById(req.params.id);
+
+    if (!usuario) {
+      return res.status(404).json({
+        error: "Usuario no encontrado"
+      });
+    }
+
+    res.json(usuario);
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
+  }
+};
+
+const updateUser = async (req, res) => {
+  try {
+    const usuarioActualizado = await User.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    if (!usuarioActualizado) {
+      return res.status(404).json({
+        error: "Usuario no encontrado"
+      });
+    }
+
+    res.json(usuarioActualizado);
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const usuarioEliminado = await User.findByIdAndDelete(req.params.id);
+
+    if (!usuarioEliminado) {
+      return res.status(404).json({
+        error: "Usuario no encontrado"
+      });
+    }
+
+    res.json({
+      mensaje: "Usuario eliminado correctamente"
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
+  }
+};
+
 module.exports = {
   createUser,
   getUsers,
-  followUser
+  followUser,
+  getUserById,
+  updateUser,
+  deleteUser
 };

@@ -20,6 +20,8 @@ app.use(cors({
 const usersRouter = require("./routes/user.routes.js");
 const postsRouter = require("./routes/post.routes.js");
 const postImagesRouter = require("./routes/postImage.routes.js");
+const tagsRouter = require("./routes/tag.routes.js");
+const commentsRouter = require("./routes/comment.routes.js");
 
 // CONFIG
 dotenv.config();
@@ -43,8 +45,10 @@ app.get("/", (req, res) => {
   res.send("API funcionando correctamente 🚀");
 });
 
-app.use("/user", usersRouter);
-app.use("/post", postsRouter);
+app.use("/users", usersRouter);
+app.use("/posts", postsRouter);
+app.use("/tags", tagsRouter);
+app.use("/comments", commentsRouter);
 
 
 const PORT = process.env.PORT || 3000;

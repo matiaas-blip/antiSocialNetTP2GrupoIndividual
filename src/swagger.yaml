@@ -64,6 +64,14 @@ paths:
           required: true
           schema:
             type: string
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+
       responses:
         "200":
           description: Usuario actualizado
@@ -86,7 +94,7 @@ paths:
     get:
       tags:
         - Posts
-      summary: Obtener todos los posts o por userId
+      summary: Obtener todos los posts por userId
       parameters:
         - name: userId
           in: query
@@ -130,15 +138,24 @@ paths:
       tags:
         - Posts
       summary: Actualizar post
+
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: string
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostUpdate"
+
       responses:
         "200":
-          description: Post actualizado
+          description: Post actualizado con éxito
 
     delete:
       tags:
@@ -184,7 +201,38 @@ paths:
         "200":
           description: Lista de comentarios
 
+  /comments/{id}:
+    delete:
+      tags:
+        - Comments
+      summary: Eliminar comentario por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Comentario eliminado correctamente
+        "404":
+          description: Comentario no encontrado
+
+
   /tags:
+    post:
+      tags:
+        - Tags
+      summary: Crear tag
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tag"
+      responses:
+        "201":
+          description: Tag creado
     get:
       tags:
         - Tags
@@ -233,12 +281,10 @@ components:
           type: string
         clave:
           type: string
-        image:
+        email:
           type: string
         seguidores:
           type: array
-        fechaRegistro:
-          type: string
 
     Post:
       type: object
@@ -248,6 +294,20 @@ components:
         usuario:
           type: string
         tags:
+          type: array
+          items:
+            type: string
+
+    PostUpdate:
+      type: object
+      properties:
+        descripcion:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        images:
           type: array
           items:
             type: string
@@ -268,4 +328,12 @@ components:
         url:
           type: string
         postId:
+          type: string
+
+    Tag:
+      type: object
+      required:
+        - nombre
+      properties:
+        nombre:
           type: string

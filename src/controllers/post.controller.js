@@ -3,11 +3,11 @@ const User = require("../models/User");
 
 const createPost = async (req, res) => {
   try {
-    const { usuario, description, images, tags } = req.body;
+    const { usuario, descripcion, images, tags } = req.body;
 
     const post = await Post.create({
       usuario,
-      description,
+      descripcion,
       images: images || [],
       tags: tags || []
     });
@@ -54,8 +54,50 @@ const getFeed = async (req, res) => {
   }
 };
 
+const getPostById = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id)
+      .populate("usuario")
+      .populate("tags");
+
+    if (!post) {
+      return res.status(404).json({
+        error: "Post no encontrado"
+      });
+    }
+
+    res.json(post);
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
+  }
+};
+
+const deletePost = async (req, res) => {
+  try {
+    const post = await Post.findByIdAndDelete(req.params.id);
+
+    if (!post) {
+      return res.status(404).json({
+        error: "Post no encontrado"
+      });
+    }
+
+    res.json({
+      message: "Post eliminado correctamente"
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
+  }
+};
+
 module.exports = {
   createPost,
   getPosts,
-  getFeed
+  getFeed,
+  getPostById,
+  deletePost
 };

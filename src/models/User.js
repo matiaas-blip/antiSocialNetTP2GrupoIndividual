@@ -34,11 +34,6 @@ const userSchema = new mongoose.Schema(
         ref: "User"
       }
     ],
-    
-    fechaRegistro: {
-      type: Date,
-      default: Date.now
-    }
   },
   { timestamps: true }
 );

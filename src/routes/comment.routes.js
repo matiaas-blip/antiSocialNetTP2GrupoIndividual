@@ -4,12 +4,13 @@ const router = express.Router();
 const {
   createComment,
   getCommentsByPost,
-  hideComment
+  hideComment,
+  deleteComment
 } = require("../controllers/comment.controller");
 
 router.post("/", createComment);
-
 router.get("/post/:postId", getCommentsByPost);
+router.delete("/:id", deleteComment);
 
 router.patch("/:id/hide", hideComment);
 
