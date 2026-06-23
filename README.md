@@ -1,4 +1,4 @@
-# 📘 UnaHur Anti-Social Net – Backend API
+# UnaHur Anti-Social Net – Backend API
 
 ## Descripción
 
@@ -99,6 +99,12 @@ src/
 ├── server.js
 
 ---
+# Documentación Swagger
+
+http://localhost:3000/api-docs
+
+---
+
 
 ## Funcionalidades
 
@@ -176,49 +182,6 @@ GET /tags
 
 ---
 
-## Ejemplos
-
-### Crear usuario
-
-{
-  "usuario": "matias",
-  "clave": "123456",
-  "image": "https://img.com/perfil.jpg",
-  "seguidores": [],
-  "fechaRegistro": "2026-06-22"
-}
-
----
-
-### Crear post
-
-{
-  "descripcion": "Mi primer post",
-  "usuario": "ID_USER",
-  "tags": ["hola", "tp"]
-}
-
----
-
-### Agregar imagen
-
-{
-  "url": "https://img1.jpg",
-  "postId": "ID_POST"
-}
-
----
-
-### Comentario
-
-{
-  "texto": "buen post",
-  "postId": "ID_POST",
-  "usuario": "ID_USER"
-}
-
----
-
 ## Docker
 
 docker compose up -d
@@ -229,20 +192,11 @@ docker compose up -d
 
 - CORS habilitado para frontend (http://localhost:5173)
 - MongoDB corre en Docker
-- Login simulado en frontend (no JWT)
 
 ---
 
 ## Autor
 
-Miramon
+Estudiante Miramon
 
 ---
-
-## Estado
-
-✔ Backend funcional  
-✔ API REST completa  
-✔ MongoDB conectado  
-✔ Docker funcionando  
-✔ Listo para frontend
