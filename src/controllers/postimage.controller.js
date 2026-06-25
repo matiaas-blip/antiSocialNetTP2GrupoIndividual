@@ -9,19 +9,16 @@ const createPostImage = async (req, res) => {
   }
 };
 
-const getImagesByPost = async (req, res) => {
+const getPostImages = async (req, res) => {
   try {
-    const images = await PostImage.find({
-      postId: req.params.postId
-    });
-
+    const images = await PostImage.find();
     res.json(images);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
 
 module.exports = {
   createPostImage,
-  getImagesByPost
+  getPostImages
 };

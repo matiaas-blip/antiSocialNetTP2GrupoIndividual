@@ -1,4 +1,5 @@
 openapi: 3.0.0
+
 info:
   title: UnaHur Anti-Social Net API
   version: 1.0.0
@@ -15,19 +16,16 @@ tags:
   - name: PostImages
 
 paths:
-
   /users:
     get:
-      tags:
-        - Users
+      tags: [Users]
       summary: Obtener todos los usuarios
       responses:
         "200":
           description: Lista de usuarios
 
     post:
-      tags:
-        - Users
+      tags: [Users]
       summary: Crear usuario
       requestBody:
         required: true
@@ -41,8 +39,7 @@ paths:
 
   /users/{id}:
     get:
-      tags:
-        - Users
+      tags: [Users]
       summary: Obtener usuario por ID
       parameters:
         - name: id
@@ -55,8 +52,7 @@ paths:
           description: Usuario encontrado
 
     put:
-      tags:
-        - Users
+      tags: [Users]
       summary: Actualizar usuario
       parameters:
         - name: id
@@ -64,21 +60,18 @@ paths:
           required: true
           schema:
             type: string
-
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/User"
-
       responses:
         "200":
           description: Usuario actualizado
 
     delete:
-      tags:
-        - Users
+      tags: [Users]
       summary: Eliminar usuario
       parameters:
         - name: id
@@ -90,11 +83,11 @@ paths:
         "200":
           description: Usuario eliminado
 
+
   /posts:
     get:
-      tags:
-        - Posts
-      summary: Obtener todos los posts por userId
+      tags: [Posts]
+      summary: Obtener posts
       parameters:
         - name: userId
           in: query
@@ -106,8 +99,7 @@ paths:
           description: Lista de posts
 
     post:
-      tags:
-        - Posts
+      tags: [Posts]
       summary: Crear post
       requestBody:
         required: true
@@ -121,8 +113,7 @@ paths:
 
   /posts/{id}:
     get:
-      tags:
-        - Posts
+      tags: [Posts]
       summary: Obtener post por ID
       parameters:
         - name: id
@@ -135,31 +126,26 @@ paths:
           description: Post encontrado
 
     put:
-      tags:
-        - Posts
+      tags: [Posts]
       summary: Actualizar post
-
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: string
-
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/PostUpdate"
-
       responses:
         "200":
-          description: Post actualizado con éxito
+          description: Post actualizado
 
     delete:
-      tags:
-        - Posts
+      tags: [Posts]
       summary: Eliminar post
       parameters:
         - name: id
@@ -173,8 +159,7 @@ paths:
 
   /comments:
     post:
-      tags:
-        - Comments
+      tags: [Comments]
       summary: Crear comentario
       requestBody:
         required: true
@@ -188,8 +173,7 @@ paths:
 
   /comments/post/{postId}:
     get:
-      tags:
-        - Comments
+      tags: [Comments]
       summary: Obtener comentarios por post
       parameters:
         - name: postId
@@ -203,9 +187,8 @@ paths:
 
   /comments/{id}:
     delete:
-      tags:
-        - Comments
-      summary: Eliminar comentario por ID
+      tags: [Comments]
+      summary: Eliminar comentario
       parameters:
         - name: id
           in: path
@@ -214,15 +197,19 @@ paths:
             type: string
       responses:
         "200":
-          description: Comentario eliminado correctamente
-        "404":
-          description: Comentario no encontrado
+          description: Comentario eliminado
 
 
   /tags:
+    get:
+      tags: [Tags]
+      summary: Obtener todos los tags
+      responses:
+        "200":
+          description: Lista de tags
+
     post:
-      tags:
-        - Tags
+      tags: [Tags]
       summary: Crear tag
       requestBody:
         required: true
@@ -233,19 +220,19 @@ paths:
       responses:
         "201":
           description: Tag creado
-    get:
-      tags:
-        - Tags
-      summary: Obtener todos los tags
-      responses:
-        "200":
-          description: Lista de tags
+
 
   /postimages:
+    get:
+      tags: [PostImages]
+      summary: Obtener todas las imágenes
+      responses:
+        "200":
+          description: Lista de imágenes
+
     post:
-      tags:
-        - PostImages
-      summary: Agregar imagen a un post
+      tags: [PostImages]
+      summary: Crear imagen de post
       requestBody:
         required: true
         content:
@@ -256,22 +243,9 @@ paths:
         "201":
           description: Imagen creada
 
-  /postimages/post/{postId}:
-    get:
-      tags:
-        - PostImages
-      summary: Obtener imágenes de un post
-      parameters:
-        - name: postId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Lista de imágenes
 
 components:
+
   schemas:
 
     User:
@@ -332,8 +306,6 @@ components:
 
     Tag:
       type: object
-      required:
-        - nombre
       properties:
         nombre:
           type: string

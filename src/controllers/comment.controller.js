@@ -1,36 +1,45 @@
 const Comment = require("../models/Comment");
+const Post = require("../models/Post");
 
 const createComment = async (req, res) => {
   try {
+    console.log("BODY RECIBIDO:", req.body);
+    const { texto, usuario, postId } = req.body;
+
     const comment = new Comment({
-      texto: req.body.texto,
-      post: req.body.postId,
-      usuario: req.body.usuario
+      texto,
+      usuario,
+      post: postId,
     });
 
     await comment.save();
 
-    res.status(201).json(comment);
+    await Post.findByIdAndUpdate(
+      postId,
+      {
+        $push: { comments: comment._id }
+      }
+    );
+
+    const saved = await Comment.findById(comment._id)
+      .populate("usuario");
+
+    res.status(201).json(saved);
+
   } catch (error) {
+    console.log("createComment error:", error);
     res.status(500).json({ error: error.message });
   }
 };
 
 const getCommentsByPost = async (req, res) => {
   try {
-    const monthsLimit = process.env.COMMENT_MONTHS || 6;
-
-    const limitDate = new Date();
-    limitDate.setMonth(limitDate.getMonth() - monthsLimit);
-
     const comments = await Comment.find({
       post: req.params.postId,
       visible: true,
-      createdAt: { $gte: limitDate }
     }).populate("usuario");
 
     res.json(comments);
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -48,7 +57,6 @@ const hideComment = async (req, res) => {
     await comment.save();
 
     res.json({ msg: "Comentario ocultado" });
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -56,21 +64,10 @@ const hideComment = async (req, res) => {
 
 const deleteComment = async (req, res) => {
   try {
-    const comment = await Comment.findByIdAndDelete(req.params.id);
-
-    if (!comment) {
-      return res.status(404).json({
-        error: "Comentario no encontrado"
-      });
-    }
-
-    res.json({
-      message: "Comentario eliminado correctamente"
-    });
+    await Comment.findByIdAndDelete(req.params.id);
+    res.json({ message: "Comentario eliminado correctamente" });
   } catch (error) {
-    res.status(500).json({
-      error: error.message
-    });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -78,5 +75,5 @@ module.exports = {
   createComment,
   getCommentsByPost,
   hideComment,
-  deleteComment
+  deleteComment,
 };

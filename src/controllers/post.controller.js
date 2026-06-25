@@ -66,6 +66,7 @@ const getFeed = async (req, res) => {
   }
 };
 
+
 const getPostById = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id)
@@ -118,5 +119,5 @@ module.exports = {
   getPosts,
   getFeed,
   getPostById,
-  deletePost
+  deletePost,
 };

@@ -12,13 +12,7 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-
-    images: [
-      {
-        type: String
-      }
-    ],
-
+    
     tags: [
       {
         type: mongoose.Schema.Types.ObjectId,

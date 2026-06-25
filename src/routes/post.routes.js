@@ -6,12 +6,10 @@ const {
   getPosts,
   getFeed,
   getPostById,
-  deletePost
+  deletePost,
 } = require("../controllers/post.controller");
 
 const validatePost = require("../middleware/validatePost");
-
-/* POSTS */
 
 router.post(
   "/",
@@ -38,5 +36,7 @@ router.delete(
   "/:id",
   deletePost
 );
+
+
 
 module.exports = router;

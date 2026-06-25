@@ -3,10 +3,10 @@ const router = express.Router();
 
 const {
   createPostImage,
-  getImagesByPost
+  getPostImages
 } = require("../controllers/postImage.controller");
 
 router.post("/", createPostImage);
-router.get("/post/:postId", getImagesByPost);
+router.get("/", getPostImages);
 
 module.exports = router;
