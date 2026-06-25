@@ -4,7 +4,7 @@ const createComment = async (req, res) => {
   try {
     const comment = new Comment({
       texto: req.body.texto,
-      post: req.body.postId, // 🔥 mapeo correcto
+      post: req.body.postId,
       usuario: req.body.usuario
     });
 

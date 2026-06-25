@@ -1,37 +1,80 @@
 const User = require("../models/User");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const login = async (req, res) => {
   try {
-    const usuario = req.body.usuario?.trim().toLowerCase();
-    const clave = req.body.clave?.trim();
+    console.log("BODY LOGIN:", req.body);
+    
+    const { email } = req.body;
+    const password = req.body.password
 
-    const user = await User.findOne({ usuario });
+    if (!email || !password) {
+      return res.status(400).json({
+        error: "Faltan email o clave",
+      });
+    }
 
-    console.log("BODY:", req.body);
-    console.log("USER:", user);
+    const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(400).json({
-        error: "Usuario o contraseña incorrectos",
+        error: "Usuario no existe",
       });
     }
 
-    if (user.clave.trim() !== clave) {
+    console.log("USER COMPLETO:", user);
+    console.log("PASSWORD GUARDADA:", user.password);
+
+    const valid = await bcrypt.compare(password, user.password);
+
+    if (!valid) {
       return res.status(400).json({
-        error: "Usuario o contraseña incorrectos",
+        error: "Clave incorrecta",
       });
     }
+
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
 
     return res.json({
-      _id: user._id,
-      usuario: user.usuario,
-      email: user.email,
+      user: {
+        _id: user._id,
+        email: user.email,
+        usuario: user.usuario,
+      },
+      token,
     });
 
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return res.status(500).json({ error: err.message });
+  }
+
+};
+
+const register = async (req, res) => {
+  try {
+    const { usuario, email, password } = req.body;
+
+    const hashed = await bcrypt.hash(password, 10);
+
+    const user = await User.create({
+      usuario,
+      email,
+      password: hashed,
+    });
+
+    res.status(201).json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
 
-module.exports = { login };
+module.exports = {
+  login,
+  register
+};

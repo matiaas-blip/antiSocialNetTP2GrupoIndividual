@@ -21,13 +21,25 @@ const createPost = async (req, res) => {
 
 const getPosts = async (req, res) => {
   try {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+
     const posts = await Post.find()
       .populate("usuario")
-      .populate("tags");
+      .populate({
+        path: "comments",
+        populate: {
+          path: "usuario",
+          select: "usuario fotoPerfil"
+        }
+      })
+      .sort({ createdAt: -1 });
 
     res.json(posts);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({
+      error: error.message,
+    });
   }
 };
 
@@ -58,20 +70,27 @@ const getPostById = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id)
       .populate("usuario")
-      .populate("tags");
+      .populate("tags")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "usuario",
+          select: "usuario fotoPerfil"
+        }
+      })
 
-    if (!post) {
-      return res.status(404).json({
-        error: "Post no encontrado"
-      });
-    }
+if (!post) {
+  return res.status(404).json({
+    error: "Post no encontrado"
+  });
+}
 
-    res.json(post);
+res.json(post);
   } catch (error) {
-    res.status(500).json({
-      error: error.message
-    });
-  }
+  res.status(500).json({
+    error: error.message
+  });
+}
 };
 
 const deletePost = async (req, res) => {

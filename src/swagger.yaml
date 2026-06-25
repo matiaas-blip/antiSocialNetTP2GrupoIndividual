@@ -279,7 +279,7 @@ components:
       properties:
         usuario:
           type: string
-        clave:
+        password:
           type: string
         email:
           type: string

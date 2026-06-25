@@ -9,11 +9,34 @@ const {
   deletePost
 } = require("../controllers/post.controller");
 
-router.post("/", createPost);
-router.get("/", getPosts);
-router.get("/:id", getPostById);
-router.delete("/:id", deletePost)
+const validatePost = require("../middleware/validatePost");
 
-router.get("/feed/:userId", getFeed);
+/* POSTS */
+
+router.post(
+  "/",
+  validatePost,
+  createPost
+);
+
+router.get(
+  "/",
+  getPosts
+);
+
+router.get(
+  "/feed/:userId",
+  getFeed
+);
+
+router.get(
+  "/:id",
+  getPostById
+);
+
+router.delete(
+  "/:id",
+  deletePost
+);
 
 module.exports = router;

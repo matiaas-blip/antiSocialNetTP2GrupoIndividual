@@ -24,7 +24,12 @@ const postSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: "Tag"
       }
-    ]
+    ],
+    comments: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Comment"
+    }]
+
   },
   { timestamps: true }
 );
