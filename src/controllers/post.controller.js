@@ -96,17 +96,48 @@ res.json(post);
 
 const deletePost = async (req, res) => {
   try {
-    const post = await Post.findByIdAndDelete(req.params.id);
+    const post = await Post.findById(req.params.id);
 
     if (!post) {
-      return res.status(404).json({
-        error: "Post no encontrado"
+      return res.status(404).json({ error: "Post no encontrado" });
+    }
+
+    const userId = req.user.id;
+
+    if (post.usuario.toString() !== userId) {
+      return res.status(403).json({
+        error: "No tenés permiso para eliminar este post"
       });
     }
 
-    res.json({
-      message: "Post eliminado correctamente"
-    });
+    await post.deleteOne();
+
+    res.json({ message: "Post eliminado correctamente" });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getPostsByUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const posts = await Post.find({
+      usuario: userId
+    })
+      .populate("usuario")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "usuario",
+          select: "usuario fotoPerfil"
+        }
+      })
+      .sort({ createdAt: -1 });
+
+    res.json(posts);
+
   } catch (error) {
     res.status(500).json({
       error: error.message
@@ -120,4 +151,5 @@ module.exports = {
   getFeed,
   getPostById,
   deletePost,
+  getPostsByUser
 };

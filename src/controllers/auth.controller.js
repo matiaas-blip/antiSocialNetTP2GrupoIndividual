@@ -6,6 +6,7 @@ const login = async (req, res) => {
   try {
     console.log("BODY LOGIN:", req.body);
     
+    
     const { email } = req.body;
     const password = req.body.password
 
@@ -25,6 +26,11 @@ const login = async (req, res) => {
 
     console.log("USER COMPLETO:", user);
     console.log("PASSWORD GUARDADA:", user.password);
+    console.log("TIPO PASSWORD DB:", typeof user.password);
+    console.log("PASSWORD DB:", user.password);
+    console.log("ENTRÓ A LOGIN OK");
+    console.log("USER:", user);
+    console.log("PASSWORD OK:", password === user.password);
 
     const valid = await bcrypt.compare(password, user.password);
 
