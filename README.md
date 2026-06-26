@@ -72,16 +72,19 @@ http://localhost:3000
 src/
 │
 ├── config/
-│   └── database.js
+│   ├── database.js
+│   └── redis.js
 │
 ├── models/
-│   ├── user.model.js
-│   ├── post.model.js
-│   ├── comment.model.js
-│   ├── tag.model.js
-│   └── postImage.model.js
+│   ├── index.js
+│   ├── User.js
+│   ├── Post.js
+│   ├── Comment.js
+│   ├── Tag.js
+│   └── PostImage.js
 │
 ├── routes/
+│   ├── auth.routes.js
 │   ├── user.routes.js
 │   ├── post.routes.js
 │   ├── comment.routes.js
@@ -89,14 +92,23 @@ src/
 │   └── postImage.routes.js
 │
 ├── controllers/
+│   ├── auth.controller.js
 │   ├── user.controller.js
 │   ├── post.controller.js
 │   ├── comment.controller.js
 │   ├── tag.controller.js
 │   └── postImage.controller.js
 │
+├── middleware/
+│   ├── auth.middleware.js
+│   ├── validateLogin.js
+│   ├── validatePost.js
+│   ├── validateRegister.js
+│   └── validateUserExist.js
 ├── app.js
 ├── server.js
+├── swagger.yaml
+
 
 ---
 # Documentación Swagger
@@ -113,7 +125,7 @@ http://localhost:3000/api-docs
 - Obtener usuarios
 - Obtener usuario por ID
 - Actualizar usuario
-- Eliminar usuario
+- Eliminar usuario y posts aderidos a ese usuario
 
 ---
 
@@ -123,7 +135,7 @@ http://localhost:3000/api-docs
 - Obtener post por ID
 - Filtrar por usuario
 - Actualizar post
-- Eliminar post
+- Eliminar post y comentarios aderidos a ese post
 
 ---
 
@@ -179,12 +191,6 @@ GET /postimages/post/:postId
 
 ### Tags
 GET /tags  
-
----
-
-## Docker
-
-docker compose up -d
 
 ---
 

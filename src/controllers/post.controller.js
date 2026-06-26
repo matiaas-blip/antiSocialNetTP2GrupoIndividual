@@ -1,5 +1,7 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
+const Comment = require("../models/Comment");
+const PostImage = require("../models/PostImage");
 
 const createPost = async (req, res) => {
   try {
@@ -8,7 +10,6 @@ const createPost = async (req, res) => {
     const post = await Post.create({
       usuario,
       descripcion,
-      images: images || [],
       tags: tags || []
     });
 
@@ -80,18 +81,18 @@ const getPostById = async (req, res) => {
         }
       })
 
-if (!post) {
-  return res.status(404).json({
-    error: "Post no encontrado"
-  });
-}
+    if (!post) {
+      return res.status(404).json({
+        error: "Post no encontrado"
+      });
+    }
 
-res.json(post);
+    res.json(post);
   } catch (error) {
-  res.status(500).json({
-    error: error.message
-  });
-}
+    res.status(500).json({
+      error: error.message
+    });
+  }
 };
 
 const deletePost = async (req, res) => {
@@ -109,6 +110,12 @@ const deletePost = async (req, res) => {
         error: "No tenés permiso para eliminar este post"
       });
     }
+    await Comment.deleteMany({
+      post: post._id
+    });
+    await PostImage.deleteMany({
+      postId: post._id
+    });
 
     await post.deleteOne();
 

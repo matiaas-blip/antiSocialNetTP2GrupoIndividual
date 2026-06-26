@@ -45,6 +45,22 @@ const getCommentsByPost = async (req, res) => {
   }
 };
 
+const getAllComments = async (req, res) => {
+  try {
+    const comments = await Comment.find()
+      .populate("usuario")
+      .populate("post")
+      .sort({ createdAt: -1 });
+
+    res.json(comments);
+
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
+  }
+};
+
 const hideComment = async (req, res) => {
   try {
     const comment = await Comment.findById(req.params.id);
@@ -76,4 +92,5 @@ module.exports = {
   getCommentsByPost,
   hideComment,
   deleteComment,
+  getAllComments,
 };

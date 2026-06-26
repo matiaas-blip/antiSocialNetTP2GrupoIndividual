@@ -1,4 +1,4 @@
-const PostImage = require("../models/postImage");
+const PostImage = require("../models/PostImage");
 
 const createPostImage = async (req, res) => {
   try {

@@ -15,6 +15,9 @@ tags:
   - name: Tags
   - name: PostImages
 
+security:
+  - bearerAuth: []
+
 paths:
   /users:
     get:
@@ -245,6 +248,12 @@ paths:
 
 
 components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 
   schemas:
 

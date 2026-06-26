@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const Post = require("../models/Post");
+const Comment = require("../models/Comment");
 
 const createUser = async (req, res) => {
   try {
@@ -93,17 +95,24 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    const usuarioEliminado = await User.findByIdAndDelete(req.params.id);
+    const userId = req.params.id;
+    const posts = await Post.find({ usuario: userId });
+    for (const post of posts) {
+      await Comment.deleteMany({ post: post._id });
+    }
+
+    await Post.deleteMany({ usuario: userId });
+    const usuarioEliminado = await User.findByIdAndDelete(userId);
 
     if (!usuarioEliminado) {
       return res.status(404).json({
         error: "Usuario no encontrado"
       });
     }
-
     res.json({
       mensaje: "Usuario eliminado correctamente"
     });
+
   } catch (error) {
     res.status(500).json({
       error: error.message
