@@ -69,6 +69,8 @@ http://localhost:3000
 
 ## 📁 Estructura del proyecto
 
+```bash
+
 src/
 │
 ├── config/
@@ -109,7 +111,7 @@ src/
 ├── server.js
 ├── swagger.yaml
 
-
+```
 ---
 # Documentación Swagger
 
